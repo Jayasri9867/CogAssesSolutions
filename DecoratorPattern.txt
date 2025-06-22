@@ -1,0 +1,93 @@
+
+
+public class DecoratorPattern
+{
+	    public static void main(String[] args) {
+	       
+	        Notifier emailNotifier = new EmailNotifier();
+	        System.out.println("Sending Email Notification:");
+	        emailNotifier.send();
+
+	        System.out.println("\nSending Email + SMS Notification:");
+	        Notifier emailAndSMS = new SMSNotifierDecorator(new EmailNotifier());
+	        emailAndSMS.send();
+
+	        System.out.println("\nSending Email + SMS + Slack Notification:");
+	        Notifier allChannels = new SlackNotifierDecorator(
+	                                    new SMSNotifierDecorator(
+	                                        new EmailNotifier()
+	                                    )
+	                                );
+	        allChannels.send();
+	    }
+	}
+
+	interface Notifier {
+	    void send();
+	}
+
+	class EmailNotifier implements Notifier {
+	    @Override
+	    public void send() {
+	        System.out.println("Sending notification via Email");
+	    }
+	}
+
+	abstract class NotifierDecorator implements Notifier {
+	    protected Notifier notifier;
+
+	    public NotifierDecorator(Notifier notifier) {
+	        this.notifier = notifier;
+	    }
+
+	    public void send() {
+	        notifier.send(); 
+	    }
+	}
+
+	class SMSNotifierDecorator extends NotifierDecorator {
+	    public SMSNotifierDecorator(Notifier notifier) {
+	        super(notifier);
+	    }
+
+	    @Override
+	    public void send() {
+	        super.send();
+	        sendSMS();
+	    }
+
+	    private void sendSMS() {
+	        System.out.println("Sending notification via SMS");
+	    }
+	}
+
+	class SlackNotifierDecorator extends NotifierDecorator {
+	    public SlackNotifierDecorator(Notifier notifier) {
+	        super(notifier);
+	    }
+
+	    @Override
+	    public void send() {
+	        super.send();
+	        sendSlack();
+	    }
+
+	    private void sendSlack() {
+	        System.out.println("Sending notification via Slack");
+	    }
+	}
+
+Output:
+
+Sending Email Notification:
+Sending notification via Email
+
+Sending Email + SMS Notification:
+Sending notification via Email
+Sending notification via SMS
+
+Sending Email + SMS + Slack Notification:
+Sending notification via Email
+Sending notification via SMS
+Sending notification via Slack
+

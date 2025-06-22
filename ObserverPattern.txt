@@ -1,0 +1,87 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class ObserverPattern {
+    public static void main(String[] args) {
+        StockMarket stockMarket = new StockMarket();
+
+        Observer mobileApp = new MobileApp();
+        Observer webApp = new WebApp();
+
+        stockMarket.registerObserver(mobileApp);
+        stockMarket.registerObserver(webApp);
+
+        stockMarket.setStockPrice(150.5);
+
+        System.out.println();
+
+        stockMarket.removeObserver(webApp);
+        stockMarket.setStockPrice(175.0);
+    }
+}
+
+interface Observer {
+    void update(double newPrice);
+}
+
+interface Stock {
+    void registerObserver(Observer observer);
+    void removeObserver(Observer observer);
+    void notifyObservers();
+}
+
+class StockMarket implements Stock {
+    private List<Observer> observers = new ArrayList<>();
+    private double stockPrice;
+
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+        System.out.println(observer.getClass().getSimpleName() + " registered.");
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+        System.out.println(observer.getClass().getSimpleName() + " deregistered.");
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer o : observers) {
+            o.update(stockPrice);
+        }
+    }
+
+    public void setStockPrice(double price) {
+        this.stockPrice = price;
+        System.out.println("Stock price updated to $" + price);
+        notifyObservers();
+    }
+}
+
+class MobileApp implements Observer {
+    @Override
+    public void update(double newPrice) {
+        System.out.println("MobileApp: Stock price changed to $" + newPrice);
+    }
+}
+
+class WebApp implements Observer {
+    @Override
+    public void update(double newPrice) {
+        System.out.println("WebApp: Stock price changed to $" + newPrice);
+    }
+}
+
+Output:
+
+MobileApp registered.
+WebApp registered.
+Stock price updated to $150.5
+MobileApp: Stock price changed to $150.5
+WebApp: Stock price changed to $150.5
+
+WebApp deregistered.
+Stock price updated to $175.0
+MobileApp: Stock price changed to $175.0

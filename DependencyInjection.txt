@@ -1,0 +1,45 @@
+
+
+public class DependencyInjection 
+ {
+    public static void main(String[] args) {
+       
+        CustomerRepository repository = new CustomerRepositoryImpl();
+
+        CustomerService service = new CustomerService(repository);
+
+        service.getCustomerById("C001");
+    }
+}
+
+interface CustomerRepository {
+    String findCustomerById(String customerId);
+}
+
+class CustomerRepositoryImpl implements CustomerRepository {
+    @Override
+    public String findCustomerById(String customerId) {
+       
+        return "Customer [ID: " + customerId + ", Name: Jayasri, Location: Chennai]";
+    }
+}
+
+
+class CustomerService {
+    private CustomerRepository customerRepository;
+
+    public CustomerService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+
+    public void getCustomerById(String customerId) {
+        String customerInfo = customerRepository.findCustomerById(customerId);
+        System.out.println("Customer Info: " + customerInfo);
+    }
+
+
+}
+
+output:
+
+Customer Info: Customer [ID: C001, Name: Jayasri, Location: Chennai]

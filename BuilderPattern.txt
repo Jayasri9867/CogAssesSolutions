@@ -1,0 +1,82 @@
+
+
+public class BuilderPattern {
+    public static void main(String[] args) {
+        Computer basicPC = new Computer.Builder("Intel i3", "4GB")
+                                .setStorage("256GB HDD")
+                                .build();
+
+        System.out.println("Basic PC:");
+        basicPC.showSpecs();
+
+        System.out.println();
+
+        Computer gamingPC = new Computer.Builder("Intel i9", "32GB")
+                                 .setStorage("1TB SSD")
+                                 .setGraphicsCard("NVIDIA RTX 4090")
+                                 .build();
+
+        System.out.println("Gaming PC:");
+        gamingPC.showSpecs();
+    }
+}
+
+class Computer {
+    private String cpu;
+    private String ram;
+    private String storage;
+    private String graphicsCard;
+
+    private Computer(Builder builder) {
+        this.cpu = builder.cpu;
+        this.ram = builder.ram;
+        this.storage = builder.storage;
+        this.graphicsCard = builder.graphicsCard;
+    }
+
+    public void showSpecs() {
+        System.out.println("CPU: " + cpu);
+        System.out.println("RAM: " + ram);
+        System.out.println("Storage: " + (storage != null ? storage : "Not specified"));
+        System.out.println("Graphics Card: " + (graphicsCard != null ? graphicsCard : "Not specified"));
+    }
+    public static class Builder {
+        private String cpu;
+        private String ram;
+        private String storage;
+        private String graphicsCard;
+
+        public Builder(String cpu, String ram) {
+            this.cpu = cpu;
+            this.ram = ram;
+        }
+
+        public Builder setStorage(String storage) {
+            this.storage = storage;
+            return this;
+        }
+
+        public Builder setGraphicsCard(String graphicsCard) {
+            this.graphicsCard = graphicsCard;
+            return this;
+        }
+
+        public Computer build() {
+            return new Computer(this);
+        }
+    }
+}
+
+output:
+
+Basic PC:
+CPU: Intel i3
+RAM: 4GB
+Storage: 256GB HDD
+Graphics Card: Not specified
+
+Gaming PC:
+CPU: Intel i9
+RAM: 32GB
+Storage: 1TB SSD
+Graphics Card: NVIDIA RTX 4090

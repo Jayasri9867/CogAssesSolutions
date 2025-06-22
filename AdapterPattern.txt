@@ -1,0 +1,64 @@
+
+
+public class AdapterPattern 
+{
+	
+	    public static void main(String[] args) 
+	    {
+	        PayPalGateway payPal = new PayPalGateway();
+	        PaymentProcessor payPalProcessor = new PayPalAdapter(payPal);
+	        payPalProcessor.processPayment(250.0);
+
+	        System.out.println();
+	        StripeGateway stripe = new StripeGateway();
+	        PaymentProcessor stripeProcessor = new StripeAdapter(stripe);
+	        stripeProcessor.processPayment(500.0);
+	    }
+	}
+
+	interface PaymentProcessor {
+	    void processPayment(double amount);
+	}
+
+	class PayPalGateway {
+	    public void makePayment(double amountInDollars) {
+	        System.out.println("Processing PayPal payment of $" + amountInDollars);
+	    }
+	}
+
+	class StripeGateway {
+	    public void stripePay(double amount) {
+	        System.out.println("Processing Stripe payment of $" + amount);
+	    }
+	}
+
+	class PayPalAdapter implements PaymentProcessor {
+	    private PayPalGateway payPal;
+
+	    public PayPalAdapter(PayPalGateway payPal) {
+	        this.payPal = payPal;
+	    }
+
+	    public void processPayment(double amount) {
+	        payPal.makePayment(amount);
+	    }
+	}
+
+	class StripeAdapter implements PaymentProcessor {
+	    private StripeGateway stripe;
+
+	    public StripeAdapter(StripeGateway stripe) {
+	        this.stripe = stripe;
+	    }
+
+	    public void processPayment(double amount) {
+	        stripe.stripePay(amount);
+	    }
+	}
+
+
+Output:
+    
+Processing PayPal payment of $250.0
+
+Processing Stripe payment of $500.0
