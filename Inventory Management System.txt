@@ -1,0 +1,50 @@
+class Product {
+    int productId;
+    String productName;
+    int quantity;
+    double price;
+
+    Product(int id, String name, int qty, double price) {
+        this.productId = id;
+        this.productName = name;
+        this.quantity = qty;
+        this.price = price;
+    }
+
+    public String toString() {
+        return productId + " - " + productName + " - Qty: " + quantity + " - Price: " + price;
+    }
+}
+
+import java.util.*;
+
+public class InventoryManagementSystem {
+    static Map<Integer, Product> inventory = new HashMap<>();
+
+    public static void addProduct(Product p) {
+        inventory.put(p.productId, p);
+    }
+
+    public static void updateProduct(int id, int qty) {
+        if (inventory.containsKey(id)) {
+            inventory.get(id).quantity = qty;
+        }
+    }
+
+    public static void deleteProduct(int id) {
+        inventory.remove(id);
+    }
+
+    public static void main(String[] args) {
+        addProduct(new Product(1, "Mouse", 20, 450.50));
+        addProduct(new Product(2, "Keyboard", 15, 800.00));
+        updateProduct(2, 10);
+        deleteProduct(1);
+        inventory.values().forEach(System.out::println);
+    }
+}
+
+Output:
+     2 - Keyboard - Qty: 10 - Price: 800.0
+
+

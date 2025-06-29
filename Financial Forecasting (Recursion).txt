@@ -1,0 +1,18 @@
+public class FinancialForecasting {
+
+    public static double forecast(double current, double growthRate, int years) {
+        if (years == 0) return current;
+        return forecast(current * (1 + growthRate), growthRate, years - 1);
+    }
+
+    public static void main(String[] args) {
+        double initial = 10000;
+        double growthRate = 0.10; // 10%
+        int years = 5;
+        double futureValue = forecast(initial, growthRate, years);
+        System.out.println("Future Value after " + years + " years: ₹" + futureValue);
+    }
+}
+
+Output:
+      Future Value after 5 years: ₹16105.100000000006

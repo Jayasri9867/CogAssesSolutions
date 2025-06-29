@@ -1,0 +1,57 @@
+class Book {
+    int bookId;
+    String title;
+    String author;
+
+    Book(int id, String t, String a) {
+        this.bookId = id;
+        this.title = t;
+        this.author = a;
+    }
+
+    public String toString() {
+        return bookId + ": " + title + " by " + author;
+    }
+}
+
+public class LibraryManagementSystem {
+
+    public static int linearSearch(Book[] books, String title) {
+        for (int i = 0; i < books.length; i++) {
+            if (books[i].title.equalsIgnoreCase(title)) return i;
+        }
+        return -1;
+    }
+
+    public static int binarySearch(Book[] books, String title) {
+        int low = 0, high = books.length - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int cmp = books[mid].title.compareToIgnoreCase(title);
+            if (cmp == 0) return mid;
+            else if (cmp < 0) low = mid + 1;
+            else high = mid - 1;
+        }
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        Book[] books = {
+            new Book(1, "Algorithms", "CLRS"),
+            new Book(2, "Java Basics", "James"),
+            new Book(3, "Data Structures", "Sahni")
+        };
+
+        int i = linearSearch(books, "Java Basics");
+        System.out.println("Linear Search: " + books[i]);
+
+        java.util.Arrays.sort(books, (a, b) -> a.title.compareToIgnoreCase(b.title));
+        i = binarySearch(books, "Algorithms");
+        System.out.println("Binary Search: " + books[i]);
+    }
+}
+
+
+Output:
+       Linear Search: 2: Java Basics by James
+       Binary Search: 1: Algorithms by CLRS
